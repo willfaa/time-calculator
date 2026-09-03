@@ -4,8 +4,8 @@ A static browser calculator for tracking occupied islands in Goodgame Empire's S
 
 ## What it calculates
 
-- The input time is the moment a player successfully occupies the island.
-- Disappearance is calculated from occupation time plus the manually entered active duration.
+- The occupation time is captured automatically when you click `ADD TO TRACKER`.
+- Disappearance is calculated from that current time plus the manually entered active duration.
 - Small Islands allow up to 6 hours and respawn 1 day after disappearing.
 - Large Islands allow up to 16 hours and respawn 3 days after disappearing.
 - Respawn coordinates use the island coordinates entered in the tracker.
