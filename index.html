@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Storm Islands occupation, respawn and attack timing calculator for Goodgame Empire."
+    />
+    <title>Storm Islands | Time Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <div class="eyebrow">
+          <span class="pulse"></span> GOODGAME EMPIRE / STORM ISLANDS
+        </div>
+        <h1>Track the storm.<br /><em>Hit the window.</em></h1>
+        <p class="hero-copy">
+          Calculate when an occupied island disappears, where it may respawn,
+          and when to send the next attack.
+        </p>
+        <div class="rule-line">
+          <span>OCCUPIED</span><i></i><span>DISAPPEARS</span><i></i
+          ><span>RESPAWNS</span>
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="Island calculator">
+        <form id="island-form" class="form-panel" novalidate>
+          <div class="panel-heading">
+            <div>
+              <span class="section-kicker">01 / ISLAND DATA</span>
+              <h2>Log an occupied island</h2>
+            </div>
+            <span class="required-note">* REQUIRED</span>
+          </div>
+          <div id="form-message" class="form-message" role="alert" hidden></div>
+          <div class="field-grid two">
+            <label
+              >Island name <span>*</span
+              ><input
+                id="island-name"
+                name="name"
+                type="text"
+                placeholder="e.g. North Reef"
+                required
+            /></label>
+            <label
+              >Island type <span>*</span
+              ><select id="island-type" name="type">
+                <option value="small">Small Island</option>
+                <option value="large">Large Island</option>
+              </select></label
+            >
+          </div>
+          <div class="field-grid two">
+            <label
+              >Occupied at <span>*</span
+              ><input
+                id="occupied-at"
+                name="occupiedAt"
+                type="datetime-local"
+                required
+            /></label>
+            <div class="field-label">
+              Active duration <span>*</span>
+              <div class="duration-row">
+                <input
+                  id="hours"
+                  type="number"
+                  min="0"
+                  max="16"
+                  value="0"
+                  placeholder="HH"
+                  aria-label="Hours"
+                /><b>:</b
+                ><input
+                  id="minutes"
+                  type="number"
+                  min="0"
+                  max="59"
+                  value="0"
+                  placeholder="MM"
+                  aria-label="Minutes"
+                /><b>:</b
+                ><input
+                  id="seconds"
+                  type="number"
+                  min="0"
+                  max="59"
+                  value="0"
+                  placeholder="SS"
+                  aria-label="Seconds"
+                />
+              </div>
+              <small id="duration-limit"
+                >Maximum 06:00:00 for Small Island</small
+              >
+            </div>
+          </div>
+          <div class="subheading">
+            <span>Current island coordinates</span>
+            <div></div>
+          </div>
+          <div class="field-grid two">
+            <label
+              >X coordinate <span>*</span
+              ><input
+                id="island-x"
+                type="number"
+                step="any"
+                placeholder="e.g. 512"
+                required
+            /></label>
+            <label
+              >Y coordinate <span>*</span
+              ><input
+                id="island-y"
+                type="number"
+                step="any"
+                placeholder="e.g. 284"
+                required
+            /></label>
+          </div>
+          <div class="subheading">
+            <span>Respawn offset range</span>
+            <div></div>
+            <small>Randomized on each regenerate</small>
+          </div>
+          <div class="offset-grid">
+            <label
+              >Offset X min<input
+                id="offset-x-min"
+                type="number"
+                step="any"
+                value="-10" /></label
+            ><label
+              >Offset X max<input
+                id="offset-x-max"
+                type="number"
+                step="any"
+                value="10" /></label
+            ><label
+              >Offset Y min<input
+                id="offset-y-min"
+                type="number"
+                step="any"
+                value="-10" /></label
+            ><label
+              >Offset Y max<input
+                id="offset-y-max"
+                type="number"
+                step="any"
+                value="10"
+            /></label>
+          </div>
+          <div class="subheading">
+            <span>Attack timing</span>
+            <div></div>
+            <small>Optional</small>
+          </div>
+          <div class="field-grid two">
+            <label
+              >Attack target<select id="attack-target">
+                <option value="respawn">Next respawn</option>
+                <option value="disappear">Disappearance</option>
+              </select></label
+            >
+            <label
+              >Travel time mode<select id="travel-mode">
+                <option value="manual">Manual duration</option>
+                <option value="distance">Distance + speed</option>
+              </select></label
+            >
+          </div>
+          <div id="manual-travel" class="field-grid one">
+            <label
+              >Travel duration
+              <div class="duration-row">
+                <input
+                  id="travel-hours"
+                  type="number"
+                  min="0"
+                  value="0"
+                  aria-label="Travel hours"
+                /><b>:</b
+                ><input
+                  id="travel-minutes"
+                  type="number"
+                  min="0"
+                  max="59"
+                  value="30"
+                  aria-label="Travel minutes"
+                /><b>:</b
+                ><input
+                  id="travel-seconds"
+                  type="number"
+                  min="0"
+                  max="59"
+                  value="0"
+                  aria-label="Travel seconds"
+                /></div
+            ></label>
+          </div>
+          <div id="distance-travel" class="field-grid two" hidden>
+            <label
+              >Player X<input id="player-x" type="number" step="any" /></label
+            ><label
+              >Player Y<input id="player-y" type="number" step="any" /></label
+            ><label
+              >Speed (coordinates / hour)<input
+                id="speed"
+                type="number"
+                min="0"
+                step="any"
+                placeholder="e.g. 80"
+            /></label>
+          </div>
+          <button class="primary-button" type="submit">
+            <span>ADD TO TRACKER</span><strong>↗</strong>
+          </button>
+        </form>
+
+        <aside class="side-panel">
+          <div class="legend">
+            <span><i class="dot small-dot"></i> SMALL / 6H</span
+            ><span><i class="dot large-dot"></i> LARGE / 16H</span>
+          </div>
+          <div class="tip">
+            <span>FIELD NOTE</span>
+            <p>
+              The clock starts when your occupation succeeds. Respawn delay
+              starts only after the island disappears.
+            </p>
+          </div>
+          <div class="mini-equation">
+            <span>SMALL</span><strong>+ 1 DAY</strong><span>RESPAWN</span
+            ><span>LARGE</span><strong>+ 3 DAYS</strong><span>RESPAWN</span>
+          </div>
+        </aside>
+      </section>
+
+      <section class="tracker-section">
+        <div class="tracker-heading">
+          <div>
+            <span class="section-kicker">02 / LIVE TRACKER</span>
+            <h2>Tracked islands <sup id="island-count">0</sup></h2>
+          </div>
+          <button id="clear-all" class="text-button" type="button" hidden>
+            Clear all
+          </button>
+        </div>
+        <div id="empty-state" class="empty-state">
+          <div class="empty-mark">+</div>
+          <p>Your tracker is clear.</p>
+          <span>Add an occupied island above to see its full timeline.</span>
+        </div>
+        <div id="island-list" class="island-list"></div>
+      </section>
+      <footer>
+        <span>STORM ISLANDS CALCULATOR</span
+        ><span
+          >All times use your local timezone · Results stay in this
+          browser</span
+        >
+      </footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
