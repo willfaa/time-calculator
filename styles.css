@@ -381,6 +381,31 @@ input::placeholder {
 .card-actions button:hover {
   color: var(--rust);
 }
+.island-clock {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  background: var(--ink);
+  color: var(--cream);
+  margin: 19px 0 0;
+  padding: 15px 17px;
+}
+.island-clock span,
+.island-clock small,
+.direction-strip b,
+.direction-strip span {
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+.island-clock strong {
+  color: var(--yellow);
+  font: 700 25px "DM Mono", monospace;
+  letter-spacing: .04em;
+}
+.island-clock small {
+  color: #a8b5aa;
+  letter-spacing: 0;
+}
 .timeline {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -402,18 +427,58 @@ input::placeholder {
 .timeline-item.highlight strong {
   color: var(--rust);
 }
-.attack-strip {
+.direction-strip {
+  display: grid;
+  grid-template-columns: 58px 1fr auto;
+  align-items: center;
+  gap: 17px;
   background: #e8e5d8;
   margin: 18px -24px -22px;
-  padding: 14px 24px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 28px;
-  font-size: 11px;
+  padding: 13px 24px;
 }
-.attack-strip b {
+.direction-arrow {
+  display: grid;
+  justify-items: center;
+  color: var(--rust);
+  transform: rotate(var(--bearing));
+  transform-origin: center;
+}
+.direction-arrow span {
+  font: 700 31px/1 Syne, sans-serif;
+}
+.direction-arrow small {
+  color: var(--green);
+  font-size: 9px;
+  transform: rotate(calc(var(--bearing) * -1));
+}
+.direction-strip > div:nth-child(2) {
+  display: grid;
+  gap: 6px;
+}
+.direction-strip b {
   font-weight: 500;
   color: var(--green);
+}
+.direction-strip span {
+  color: var(--muted);
+  letter-spacing: 0;
+}
+.direction-strip > strong {
+  color: var(--rust);
+  font: 700 22px Syne, sans-serif;
+  white-space: nowrap;
+}
+.direction-strip > strong small {
+  display: block;
+  color: var(--muted);
+  font: 10px "DM Mono", monospace;
+  text-align: right;
+}
+.attack-strip {
+  display: none;
+}
+.direction-strip {
+  background: #e8e5d8;
 }
 .form-message {
   background: #f7d8d1;
@@ -479,9 +544,16 @@ footer {
     justify-content: space-between;
     gap: 15px;
   }
-  .attack-strip {
+  .direction-strip {
+    grid-template-columns: 48px 1fr;
     margin-left: -24px;
     margin-right: -24px;
+  }
+  .direction-strip > strong {
+    grid-column: 2;
+  }
+  .direction-strip > strong small {
+    text-align: left;
   }
   .tracker-section {
     margin-top: 55px;
